@@ -25,8 +25,11 @@ class TypesDict(StructuredDictionary):
 
 
 class ArrayDict(StructuredDictionary):
-    x = ArrayField(int)
+    x = ArrayField(Field(int))
 
+
+class DictDict(StructuredDictionary):
+    x = StructuredDictField(TypesDict)
 
 # ----- Test cases ------------------------------------------------------------
 
@@ -79,6 +82,32 @@ class TestCase(unittest.TestCase):
         valid = {'int_field': 5, 'str_field': 'str', 'dict_field': {}, 'list_field': []}
 
         self.assertTrue(t.validate(valid))
+
+    def test_array_field(self):
+        a = ArrayDict()
+
+        valid1 = {'x': [1, 2, 3]}
+        valid2 = {'x': []}
+        invalid1 = {}
+        invalid2 = {'x': 5}
+        invalid3 = {'x': {'str': 5}}
+
+        for v in valid1, valid2:
+            self.assertTrue(a.validate(v))
+        for i in invalid1, invalid2, invalid3:
+            self.assertFalse(a.validate(i))
+
+    def test_sub_dict(self):
+        d = DictDict()
+
+        v_types = {'int_field': 5, 'str_field': 'str', 'dict_field': {}, 'list_field': []}
+        inv_types = {}
+
+        v_dd = {'x': v_types}
+        inv_dd = {'x': inv_types}
+
+        self.assertTrue(d.validate(v_dd))
+        self.assertFalse(d.validate(inv_dd))
 
 if __name__ == '__main__':
     unittest.main()
