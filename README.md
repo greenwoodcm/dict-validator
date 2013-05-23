@@ -1,7 +1,7 @@
 dict-validator
 ==============
 
-Python module for validating dictionaries against a schema
+Python module for validating dictionaries against a schema.  I built this module for use in a Flask web service that accepts JSON data and must validate it before proceeding.
 
 Features
 ---
