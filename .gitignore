@@ -1,0 +1,5 @@
+# PyCharm stuff
+.idea
+
+# compiled python files
+*.pyc
