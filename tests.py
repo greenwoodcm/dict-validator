@@ -1,34 +1,34 @@
 import unittest
-from structureddict import StructuredDictionary
+from dictvalidator import DictValidator
 from fields import *
 
 # ----- StructuredDictionary subclasses used for testing ----------------------
 
 
-class Empty(StructuredDictionary):
+class Empty(DictValidator):
     pass
 
 
-class RequiredInt(StructuredDictionary):
+class RequiredInt(DictValidator):
     x = Field(int, required=True)
 
 
-class NonRequiredInt(StructuredDictionary):
+class NonRequiredInt(DictValidator):
     x = Field(int, required=False)
 
 
-class TypesDict(StructuredDictionary):
+class TypesDict(DictValidator):
     int_field = Field(int)
     str_field = Field(str)
     dict_field = Field(dict)
     list_field = Field(list)
 
 
-class ArrayDict(StructuredDictionary):
+class ArrayDict(DictValidator):
     x = ArrayField(Field(int))
 
 
-class DictDict(StructuredDictionary):
+class DictDict(DictValidator):
     x = StructuredDictField(TypesDict)
 
 # ----- Test cases ------------------------------------------------------------

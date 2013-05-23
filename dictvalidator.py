@@ -1,8 +1,8 @@
-from meta import StructuredDictMeta
+from meta import DictValidatorMeta
 
 
-class StructuredDictionary(object):
-    __metaclass__ = StructuredDictMeta
+class DictValidator(object):
+    __metaclass__ = DictValidatorMeta
 
     def validate(self, dictionary):
         if not isinstance(dictionary, dict):

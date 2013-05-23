@@ -1,7 +1,7 @@
-from fields import *
+from fields import Field
 
 
-class StructuredDictMeta(type):
+class DictValidatorMeta(type):
 
     def __init__(cls, name, bases, namespace):
         # the _fields attribute will hold a mapping from
