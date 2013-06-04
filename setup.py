@@ -12,16 +12,16 @@ from setuptools import setup
 
 
 setup(
-    name='dict-validator',
+    name='dictvalidator',
     version='0.1',
-    url='https://github.com/greenwoodcm/dict-validator',
+    url='https://github.com/greenwoodcm/dictvalidator',
     license='BSD',
     author='Chris Greenwood',
     author_email='greenwoodcm@gmail.com',
     description='Python module for validating dictionaries against a schema',
     long_description=__doc__,
-    packages=['dict-validator'],
-    namespace_packages=['dict-validator'],
+    packages=['dictvalidator'],
+    namespace_packages=['dictvalidator'],
     zip_safe=False,
     platforms='any',
     install_requires=[
