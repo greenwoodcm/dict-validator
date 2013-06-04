@@ -14,18 +14,15 @@ from setuptools import setup
 setup(
     name='dictvalidator',
     version='0.1',
-    url='https://github.com/greenwoodcm/dict-validator',
+    url='http://github.com/greenwoodcm/dict-validator',
     license='BSD',
     author='Chris Greenwood',
     author_email='greenwoodcm@gmail.com',
     description='Python module for validating dictionaries against a schema',
     long_description=__doc__,
     packages=['dictvalidator'],
-    namespace_packages=['dictvalidator'],
     zip_safe=False,
     platforms='any',
-    install_requires=[
-    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
