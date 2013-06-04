@@ -20,8 +20,8 @@ setup(
     author_email='greenwoodcm@gmail.com',
     description='Python module for validating dictionaries against a schema',
     long_description=__doc__,
-    packages=['flaskext'],
-    namespace_packages=['flaskext'],
+    packages=['dictvalidator'],
+    namespace_packages=['dictvalidator'],
     zip_safe=False,
     platforms='any',
     install_requires=[
