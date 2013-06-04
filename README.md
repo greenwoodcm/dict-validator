@@ -1,7 +1,14 @@
 dict-validator
 ==============
 
-Python module for validating dictionaries against a schema
+Python module for validating dictionaries against a schema.  
+
+I built this module for use in a Flask web service that accepts JSON data and must validate 
+it before proceeding.  I first considered using [Voluptuous](https://pypi.python.org/pypi/voluptuous/), 
+which has a similar end result.  However, I don't really like the method they use of defining the
+schema itself as a dictionary.  So I have created an object-oriented method of validating dictionaries,
+where you define your schema as a class or set of nested classes that indicate which attributes should
+exist in the dictionary.
 
 Features
 ---
@@ -42,6 +49,7 @@ Improvements
 ---
 
 * add validators to individual fields (range validation on integers, length validation for strings, etc.)
+* add support for attribute names that are reserved keywords in python.  maybe escape with a double underscore.
 * clean the code so that you don't have to instantiate an instance of the validator.  Another clean option would be to wrap the dictionary in your validation class and then validate that way
 
 for example:
