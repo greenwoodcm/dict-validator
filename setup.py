@@ -14,7 +14,7 @@ from setuptools import setup
 setup(
     name='dictvalidator',
     version='0.1',
-    url='https://github.com/greenwoodcm/dictvalidator',
+    url='https://github.com/greenwoodcm/dict-validator',
     license='BSD',
     author='Chris Greenwood',
     author_email='greenwoodcm@gmail.com',
