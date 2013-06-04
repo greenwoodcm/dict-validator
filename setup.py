@@ -20,8 +20,8 @@ setup(
     author_email='greenwoodcm@gmail.com',
     description='Python module for validating dictionaries against a schema',
     long_description=__doc__,
-    packages=['dictvalidator'],
-    namespace_packages=['dictvalidator'],
+    packages=['dict-validator'],
+    namespace_packages=['dict-validator'],
     zip_safe=False,
     platforms='any',
     install_requires=[
