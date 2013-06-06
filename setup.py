@@ -21,6 +21,7 @@ setup(
     description='Python module for validating dictionaries against a schema',
     long_description=__doc__,
     packages=['dictvalidator'],
+    namespace_packages=['dictvalidator'],
     zip_safe=False,
     platforms='any',
     classifiers=[
