@@ -32,17 +32,15 @@ class MyDict(DictValidator):
   a = StructuredDictField(InnerDict)  # a is a required dictionary attribute that conforms to the schema above
 
 
-dict1 = {}
-dict2 = {'a': 5}
-dict3 = {'a': {}}
-dict4 = {'a': {'x': 5, 'y': 'string', 'z': ['a','b','c']}}
+dict1 = MyDict({})
+dict2 = MyDict({'a': 5})
+dict3 = MyDict({'a': {}})
+dict4 = MyDict({'a': {'x': 5, 'y': 'string', 'z': ['a','b','c']}})
 
-validator = MyDict()
-
-valid1 = validator.validate(dict1)    # invalid because the dict does not contain a
-valid2 = validator.validate(dict2)    # invalid because a is not a dict
-valid3 = validator.validate(dict3)    # invalid because a fails the InnerDict validator
-valid4 = validator.validate(dict4)    # valid
+valid1 = dict1.validate()    # invalid because the dict does not contain a
+valid2 = dict2.validate()    # invalid because a is not a dict
+valid3 = dict3.validate()    # invalid because a fails the InnerDict validator
+valid4 = dict4.validate()    # valid
 ```
 
 Improvements
@@ -50,13 +48,4 @@ Improvements
 
 * add validators to individual fields (range validation on integers, length validation for strings, etc.)
 * add support for attribute names that are reserved keywords in python.  maybe escape with a double underscore.
-* clean the code so that you don't have to instantiate an instance of the validator.  Another clean option would be to wrap the dictionary in your validation class and then validate that way
-* validation error should throw exception, not just return false silently
-* include a "safe" parameter to validate() that still just returns false and succeeds instead of throwing exception
-* add helpful exceptions that indicate the validation errors that were thrown
 
-for example:
-```
-d = MyDict({'a': [1, 2, 3]})
-d.validate()
-```
