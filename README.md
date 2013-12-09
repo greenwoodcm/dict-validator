@@ -51,6 +51,9 @@ Improvements
 * add validators to individual fields (range validation on integers, length validation for strings, etc.)
 * add support for attribute names that are reserved keywords in python.  maybe escape with a double underscore.
 * clean the code so that you don't have to instantiate an instance of the validator.  Another clean option would be to wrap the dictionary in your validation class and then validate that way
+* validation error should throw exception, not just return false silently
+* include a "safe" parameter to validate() that still just returns false and succeeds instead of throwing exception
+* add helpful exceptions that indicate the validation errors that were thrown
 
 for example:
 ```
