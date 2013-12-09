@@ -40,10 +40,12 @@ class StructuredDictField(Field):
     """
     ftype will be itself a StructuredDictionary type
     """
+    def __init__(self, subtype, required=True):
+        super(StructuredDictField, self).__init__(dict, required)
+        self.subtype = subtype
 
     def validate(self, value):
-        if not isinstance(value, dict):
-            return False
+        super(StructuredDictField, self).validate(value)
 
-        sd = self.ftype()
-        return sd.validate(value)
+        sd = self.subtype(value)
+        return sd.validate()

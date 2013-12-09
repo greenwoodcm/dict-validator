@@ -43,55 +43,45 @@ class TestCase(unittest.TestCase):
         pass
 
     def test_non_dict(self):
-        e = Empty()
-
         for case in [5, 'str', ['arr']]:
             with self.assertRaises(Exception):
-                e.validate(case)
+                Empty(case).validate()
 
     def test_empty(self):
-        e = Empty()
-
-        self.assertTrue(e.validate({}))
+        self.assertTrue(Empty({}).validate())
 
     def test_non_required(self):
-        nri = NonRequiredInt()
+        empty = NonRequiredInt({})
+        with_valid_field = NonRequiredInt({'x': 5})
+        with_invalid_field = NonRequiredInt({'x': 'str'})
 
-        empty = {}
-        with_valid_field = {'x': 5}
-        with_invalid_field = {'x': 'str'}
-
-        self.assertTrue(nri.validate(empty))
-        self.assertTrue(nri.validate(with_valid_field))
+        self.assertTrue(empty.validate())
+        self.assertTrue(with_valid_field.validate())
 
         with self.assertRaises(DictValidationException):
-            nri.validate(with_invalid_field)
+            with_invalid_field.validate()
 
     def test_required(self):
-        ri = RequiredInt()
+        empty = RequiredInt({})
+        with_valid_field = RequiredInt({'x': 5})
+        with_invalid_field = RequiredInt({'x': 'str'})
 
-        empty = {}
-        with_valid_field = {'x': 5}
-        with_invalid_field = {'x': 'str'}
-
-        self.assertTrue(ri.validate(with_valid_field))
+        self.assertTrue(with_valid_field.validate())
 
         with self.assertRaises(DictValidationException):
-            ri.validate(empty)
+            empty.validate()
 
         with self.assertRaises(DictValidationException):
-            ri.validate(with_invalid_field)
+            with_invalid_field.validate()
 
     def test_types(self):
-        t = TypesDict()
 
         valid = {'int_field': 5, 'str_field': 'str', 'dict_field': {}, 'list_field': []}
+        t = TypesDict(valid)
 
-        self.assertTrue(t.validate(valid))
+        self.assertTrue(t.validate())
 
     def test_array_field(self):
-        a = ArrayDict()
-
         valid1 = {'x': [1, 2, 3]}
         valid2 = {'x': []}
         invalid1 = {}
@@ -99,39 +89,37 @@ class TestCase(unittest.TestCase):
         invalid3 = {'x': {'str': 5}}
 
         for v in valid1, valid2:
-            self.assertTrue(a.validate(v))
+            self.assertTrue(ArrayDict(v).validate())
         for i in invalid1, invalid2, invalid3:
             with self.assertRaises(DictValidationException):
-                a.validate(i)
+                ArrayDict(i).validate()
 
     def test_sub_dict(self):
-        d = DictDict()
-
         v_types = {'int_field': 5, 'str_field': 'str', 'dict_field': {}, 'list_field': []}
         inv_types = {}
 
-        v_dd = {'x': v_types}
-        inv_dd = {'x': inv_types}
+        v_dd = DictDict({'x': v_types})
+        inv_dd = DictDict({'x': inv_types})
 
-        self.assertTrue(d.validate(v_dd))
+        self.assertTrue(v_dd.validate())
         with self.assertRaises(DictValidationException):
-            d.validate(inv_dd)
+            inv_dd.validate()
 
     def test_safe_validate(self):
-        d = RequiredInt()
+        valid = RequiredInt({'x': 5})
 
-        self.assertTrue(d.validate({'x': 5}))
+        self.assertTrue(valid.validate())
 
-        invalid = {'y': 5}
+        invalid = RequiredInt({'y': 5})
 
         # make sure that in the unsafe case, this throws
         # an exception
         with self.assertRaises(DictValidationException):
-            d.validate(invalid)
+            invalid.validate()
 
         # when called using safe validation, there
         # should be no exception and just return false
-        self.assertFalse(d.validate(invalid, safe=True))
+        self.assertFalse(invalid.validate(safe=True))
 
 
 if __name__ == '__main__':
