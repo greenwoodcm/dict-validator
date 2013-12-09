@@ -1,4 +1,4 @@
-
+from exceptions import *
 
 class Field(object):
 
@@ -6,8 +6,16 @@ class Field(object):
         self.ftype = ftype
         self.required = required
 
+        # this is set in the meta when a Field is found
+        # as a member of a dictionary object
+        self.field_name = ''
+
     def validate(self, value):
-        return isinstance(value, self.ftype)
+        if not isinstance(value, self.ftype):
+            raise FieldTypeValidationException(
+                self.field_name,
+                self.ftype,
+                type(value))
 
 
 class ArrayField(Field):
@@ -16,16 +24,15 @@ class ArrayField(Field):
     ftype will be another Field definition that we use
     to validate each element in the array
     """
+    def __init__(self, subtype, required=True):
+        super(ArrayField, self).__init__(list, required)
+        self.subtype = subtype
 
     def validate(self, value):
-        if not isinstance(value, list):
-            return False
+        super(ArrayField, self).validate(value)
 
         for val in value:
-            elem_is_valid = self.ftype.validate(val)
-            if not elem_is_valid:
-                return False
-        return True
+            self.subtype.validate(val)
 
 
 class StructuredDictField(Field):

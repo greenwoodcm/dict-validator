@@ -1,6 +1,6 @@
 import unittest
 from dictvalidator import DictValidator
-from fields import *
+from dictvalidator.fields import *
 
 # ----- StructuredDictionary subclasses used for testing ----------------------
 
@@ -45,9 +45,9 @@ class TestCase(unittest.TestCase):
     def test_non_dict(self):
         e = Empty()
 
-        self.assertFalse(e.validate(5))
-        self.assertFalse(e.validate('str'))
-        self.assertFalse(e.validate(['arr']))
+        for case in [5, 'str', ['arr']]:
+            with self.assertRaises(Exception):
+                e.validate(case)
 
     def test_empty(self):
         e = Empty()
@@ -63,7 +63,9 @@ class TestCase(unittest.TestCase):
 
         self.assertTrue(nri.validate(empty))
         self.assertTrue(nri.validate(with_valid_field))
-        self.assertFalse(nri.validate(with_invalid_field))
+
+        with self.assertRaises(DictValidationException):
+            nri.validate(with_invalid_field)
 
     def test_required(self):
         ri = RequiredInt()
@@ -72,9 +74,13 @@ class TestCase(unittest.TestCase):
         with_valid_field = {'x': 5}
         with_invalid_field = {'x': 'str'}
 
-        self.assertFalse(ri.validate(empty))
         self.assertTrue(ri.validate(with_valid_field))
-        self.assertFalse(ri.validate(with_invalid_field))
+
+        with self.assertRaises(DictValidationException):
+            ri.validate(empty)
+
+        with self.assertRaises(DictValidationException):
+            ri.validate(with_invalid_field)
 
     def test_types(self):
         t = TypesDict()
@@ -95,7 +101,8 @@ class TestCase(unittest.TestCase):
         for v in valid1, valid2:
             self.assertTrue(a.validate(v))
         for i in invalid1, invalid2, invalid3:
-            self.assertFalse(a.validate(i))
+            with self.assertRaises(DictValidationException):
+                a.validate(i)
 
     def test_sub_dict(self):
         d = DictDict()
@@ -107,7 +114,25 @@ class TestCase(unittest.TestCase):
         inv_dd = {'x': inv_types}
 
         self.assertTrue(d.validate(v_dd))
-        self.assertFalse(d.validate(inv_dd))
+        with self.assertRaises(DictValidationException):
+            d.validate(inv_dd)
+
+    def test_safe_validate(self):
+        d = RequiredInt()
+
+        self.assertTrue(d.validate({'x': 5}))
+
+        invalid = {'y': 5}
+
+        # make sure that in the unsafe case, this throws
+        # an exception
+        with self.assertRaises(DictValidationException):
+            d.validate(invalid)
+
+        # when called using safe validation, there
+        # should be no exception and just return false
+        self.assertFalse(d.validate(invalid, safe=True))
+
 
 if __name__ == '__main__':
     unittest.main()

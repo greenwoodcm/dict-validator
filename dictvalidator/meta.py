@@ -10,4 +10,5 @@ class DictValidatorMeta(type):
 
         for (key, value) in namespace.items():
             if isinstance(value, Field):
+                setattr(value, 'field_name', key)
                 cls._fields[key] = value
