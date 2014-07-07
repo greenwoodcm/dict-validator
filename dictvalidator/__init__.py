@@ -22,6 +22,8 @@ class DictValidator(object):
                 if not exists:
                     if field.required:
                         validation_errors.append(FieldAbsentException(fname))
+                    else:
+                        setattr(self, fname, None)
                     continue
 
                 # now that we know its there, validate it
