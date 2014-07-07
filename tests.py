@@ -43,6 +43,11 @@ class TestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_class_var(self):
+        clazz = RequiredInt
+        val = clazz({'x': 5})
+        self.assertEqual(5, val.x)
+
     def test_non_dict(self):
         for case in [5, 'str', ['arr']]:
             with self.assertRaises(Exception):
@@ -52,10 +57,11 @@ class TestCase(unittest.TestCase):
         Empty({})
 
     def test_non_required(self):
-        NonRequiredInt({})
+        val = NonRequiredInt({})
+        self.assertIsNone(val.x)
 
-        x = NonRequiredInt({'x': 5})
-        self.assertEqual(5, x.x)
+        val = NonRequiredInt({'x': 5})
+        self.assertEqual(5, val.x)
 
         with self.assertRaises(DictValidationException):
             NonRequiredInt({'x': 'str'})
